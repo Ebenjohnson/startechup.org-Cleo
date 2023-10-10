@@ -13,5 +13,5 @@
 3. create a cloud hosted database wiith MongoDB atlas
 4. connect our atlas db to robo3t
 5. Identify what app we will build throughouty the series :_Globe Drop Project_
-6. create the API Layer(Create,Retrieve,Update,Delete) for 7. organization entity by defining models,controller,routes
+6. create the API Layer(Create,Retrieve,Update,Delete) for organization entity by defining models,controller,routes..
 7. Test our API routes with Postman
