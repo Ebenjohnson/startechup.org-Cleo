@@ -23,7 +23,7 @@ const FindOne = async (query) => {
  }
 
  const DeleteOne = async (filter) => {
-    const organizations  =await Organization.deleteOne(filter)
+    const organizations  =await Organization.deleteOne()
     return organizations
  }
 
