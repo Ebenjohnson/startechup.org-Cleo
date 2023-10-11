@@ -48,7 +48,10 @@ try {
         new: true,
         ...options,
     })
+console.log(`displaying console.log from  FindAndUpdate method : `, data)
     return user
+
+   // console.log(user)
 } catch (error) {
     throw Error(error)
 }

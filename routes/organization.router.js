@@ -1,16 +1,32 @@
-const express = require ('express')
-const router = express.Router()
-
-const OrganizationController = require('../controller/organization.controller')
-
-//Routes are uls for your API
-
-router.get('/organizations',  OrganizationController.GetOrganizationList);
-router.get('/organization/:organization_d',OrganizationController.GetOrganizationById)
-router.get('/organization/:organization_id/admins',OrganizationController.GetAdminsByOrganization)
-router.post('/organization', OrganizationController.AddOrganization)
-router.put('/organization/:organization_id',OrganizationController.UpdateOrganization)
-router.delete('/organization/:organization_id',OrganizationController.DeleteOrganization)
+/* eslint-disable camelcase */
+const express = require('express');
+const router = express.Router();
+//const { isAuthenticated } = require('../utils/middleware');
 
 
-module.exports = router
+const OrganizationController = require('../controller/organization.controller');
+
+router.get('/organizations', OrganizationController.GetOrganizationList);
+router.post('/organization', OrganizationController.AddOrganization);
+// router.use(isAuthenticated);
+
+
+router.get(
+	'/organization/:organization_id',
+	OrganizationController.GetOrganizationById
+);
+
+router.put(
+	'/organization/:organization_id',
+	OrganizationController.UpdateOrganization
+);
+router.delete(
+	'/organization/:organization_id',
+	OrganizationController.DeleteOrganization
+);
+router.get(
+	'/organization/:organization_id/admins', 
+	OrganizationController.GetAdminsByOrganization
+);
+
+module.exports = router;

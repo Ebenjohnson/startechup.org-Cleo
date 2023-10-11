@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
     userType : {
@@ -56,9 +57,9 @@ const UserSchema = new mongoose.Schema({
    })
 
 
-   UserSchema.pre('findOneAndUpdate',async()=>{
-    this.update({},{$set:{updateAt : new Date()}})
-   })
+   UserSchema.pre('findOneAndUpdate', async function ()  {
+	this.update( { $set: { updatedAt: new Date() } })
+});
 
 const User = mongoose.model("users",UserSchema,"users")
 

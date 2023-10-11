@@ -45,9 +45,16 @@ const FindOneAndPopulate = async(query,populate_field)=>{
  const FindOneAndUpdate = async (filter,data) => {
    try {
       const organization  =await Organization.findOneAndUpdate(filter,{...data})
+   //    const organization = await Organization.findOneAndUpdate(filter,data,{
+   //       new: true,
+   //       ...options,
+   //   })
+      // Console.log("data:" ,data)
+      // Console.log("organization: ",organization)
       return organization
+      
    } catch (error) {
-      throw errow;
+      throw error;
    }
  
  }

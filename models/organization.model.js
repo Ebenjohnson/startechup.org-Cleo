@@ -18,9 +18,17 @@ const OrganizationSchema = new mongoose.Schema({
 	},
 });
 
-OrganizationSchema.pre('findOneAndUpdate',async()=>{
-	this.update({},{updatedAt:new Date()})
-})
+OrganizationSchema.pre( 'findOneAndUpdate', function(next) {
+	this.updateOne({}, { $set: { updatedAt: new Date() } });
+	next()
+});
+
+
+// toySchema.pre(['updateOne', 'findOneAndUpdate'], function(next) {
+// 	console.log(this.getFilter());
+//   });
+  
+
 
 const Organization = mongoose.model("organization", OrganizationSchema , "organization")
 

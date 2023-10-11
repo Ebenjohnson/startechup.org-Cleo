@@ -14,24 +14,28 @@ const GetOrganizationList = async (req, res, next) => {
 	}
 };
 
-const GetOrganizationById =async (req,res,next)=>{
-try {
-const {organization_id} = req.params
-const organization = await OrganizationService.FindOne({
-	_id : organization_id
-})
+const GetOrganizationById = async (req, res, next) => {
+	try {
+		const { organization_id } = req.params;
 
-if (!organization){
-	return res.status(404).json({
-		message: 'Data Not Found',
-		data: organization
-	})
-}
+		const organization = await OrganizationService.FindOne({
+			_id : organization_id
+		});
+		if (!organization) {
+			return res.status(404).json({
+				message: 'Data Not Found',
+			});
+		}
 
-} catch (error) {
-	return next(new Error(error.message));
-}
-}
+		return res.status(200).json({
+			message: 'Ok',
+			data: organization,
+		});
+	} catch (error) {
+		return next(new Error(error.message));
+	}
+};
+
 
 const GetAdminsByOrganization = async(req,res,next) =>{
 	const {organization_id} = req.params
@@ -123,8 +127,11 @@ const UpdateOrganization = async (req, res, next) => {
 			message: 'Ok',
 			data: 'Organization Updated',
 		});
+		
 	} catch (error) {
-		return next(new Error(error.message));
+		return next(error);
+		
+		
 	}
 };
 
