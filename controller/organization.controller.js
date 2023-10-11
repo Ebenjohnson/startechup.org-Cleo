@@ -1,17 +1,50 @@
 const OrganizationService = require('../service/organization.service')
 
 // creating Organization API for the node APP
-const getAllOrganizations = async (req,res) =>{
-    try {
-        const organizations = await OrganizationService.Find({})
-        return res.status(200).json({
-            message: 'ok',
-            data: organizations
-        })
-    } catch (error) {
-        console.log(`error: ${error}`)
-    }
-    
+const GetOrganizationList = async (req, res, next) => {
+	try {
+		const organizations = await OrganizationService.Find({});
+
+		return res.status(200).json({
+			message: 'Ok',
+			data: organizations,
+		});
+	} catch (error) {
+		return next(new Error(error.message));
+	}
+};
+
+const GetOrganizationById =async (req,res,next)=>{
+try {
+const {organization_id} = req.params
+const organization = await OrganizationService.FindOne({
+	_id : organization_id
+})
+
+if (!organization){
+	return res.status(404).json({
+		message: 'Data Not Found',
+		data: organization
+	})
+}
+
+} catch (error) {
+	return next(new Error(error.message));
+}
+}
+
+const GetAdminsByOrganization = async(req,res,next) =>{
+	const {organization_id} = req.params
+	try {
+	
+		const admins = await OrganizationService.FindOneAndUpdate({
+			_id : organization_id,},
+			'admins'
+		)
+
+} catch (error) {
+	return next(new Error(error.message))
+}
 }
 
 const AddOrganization = async (req, res, next) => {
@@ -126,9 +159,11 @@ const DeleteOrganization = async (req,res,next) =>{
 
 
 module.exports ={
-    getAllOrganizations,
-    AddOrganization,
-    UpdateOrganization,
-    DeleteOrganization
+    GetOrganizationList,
+	GetOrganizationById,
+	AddOrganization,
+	UpdateOrganization,
+	DeleteOrganization,
+	GetAdminsByOrganization,
 
 }

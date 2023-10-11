@@ -1,6 +1,7 @@
 const User = require('../models/user.model')
 
-
+// Ensure all paramenters/augument in the various functions are met
+//it will cause error if any is left out
 const Create = async (data) =>{
     try {
        const user = await User.create(data)
@@ -10,7 +11,7 @@ const Create = async (data) =>{
     }   
 
 }
-const Find = async() =>{
+const Find = async(query) =>{
 try {
     const users = await User.find(query)
     return users
