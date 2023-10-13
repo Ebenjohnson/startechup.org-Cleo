@@ -35,14 +35,14 @@ const FindOne = async(query) =>{
 const FindOneAndPopulate = async (query, populate_field) => {
 	try {
 		const user = await User.findOne(query).populate(populate_field);
-		const organizations = user.organizations;
+		const organizations = user.organization;
 		return organizations;
 	} catch (error) {
 		throw Error(error);
 	}
 };
 
-const  FindOneAndUpdate = async (filter,data,options = {}) => {
+const  FindOneAndUpdate = async (filter,data, options = {}) => {
 try {
     const user = await User.findOneAndUpdate(filter,data,{
         new: true,

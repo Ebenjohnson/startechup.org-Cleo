@@ -41,10 +41,15 @@ const GetAdminsByOrganization = async(req,res,next) =>{
 	const {organization_id} = req.params
 	try {
 	
-		const admins = await OrganizationService.FindOneAndUpdate({
+		const admins = await OrganizationService.FindOneAndPopulate({
 			_id : organization_id,},
-			'admins'
+			"admins",
 		)
+		
+		return res.status(200).json({
+			message : "OK",
+			data: admins
+		})
 
 } catch (error) {
 	return next(new Error(error.message))
@@ -111,7 +116,7 @@ const UpdateOrganization = async (req, res, next) => {
 			});
 		}
 
-		await OrganizationService.FindOneAndUpdate(
+		update_doc =await OrganizationService.FindOneAndUpdate(
 			{ _id: organization_id },
 			{
 				org_name,
@@ -123,9 +128,13 @@ const UpdateOrganization = async (req, res, next) => {
 			}
 		);
 
+		const newdoc = await OrganizationService.FindOne({
+			_id : update_doc.id
+		})
+
 		return res.status(200).json({
 			message: 'Ok',
-			data: 'Organization Updated',
+			data: newdoc,
 		});
 		
 	} catch (error) {
@@ -137,30 +146,37 @@ const UpdateOrganization = async (req, res, next) => {
 
 
 const DeleteOrganization = async (req,res,next) =>{
+		
     try {
         const { organization_id } = req.params;
+		
 
        const organization= await OrganizationService.FindOne({
             _id : organization_id,
         })
-        
+       
         if (!organization){
             return res.status(404).json({
                 message : 'Data Not Found',
             })
+
         }
+		
 
-      await OrganizationService.DeleteOne({      _id : organization_id })
-
+       const deletedOrganization =await OrganizationService.DeleteOne({      _id : organization_id })
+       
         return res.status(200).json({
-            message: 'OK',
-            data : 'Organizatiion Deleted',
+            message: `${deletedOrganization.deletedCount} deleted`,
+            data : deletedOrganization,
             
         })
+
+		
     } catch (error) {
         return next(new Error(error.message));
         
     }
+	
     
 }
 

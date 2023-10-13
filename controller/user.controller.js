@@ -40,7 +40,7 @@ const GetUsersByType = async (req, res, next) => {
 	const { user_type } = req.params;
 	try {
 		const users = await UserService.Find({
-			userType: user_type,
+			usertype: user_type,
 		});
 
 		return res.status(200).json({
@@ -55,11 +55,11 @@ const GetUsersByType = async (req, res, next) => {
 const GetUserById = async (req, res, next) => {
 	try {
 		const { user_id } = req.params;
-		const user = await UserService.FindOne({
+		const found_user = await UserService.FindOne({
 			_id: user_id,
 		});
 	
-		if (!user) {
+		if (!found_user) {
 			return res.status(404).json({
 				message: 'User Not Found',
 			});
@@ -67,7 +67,7 @@ const GetUserById = async (req, res, next) => {
 
 		return res.status(200).json({
 			message: 'Ok',
-			data: user,
+			data: found_user ,
 		});
 	} catch (error) {
 		return next(new Error(error.message));
@@ -77,14 +77,17 @@ const GetUserById = async (req, res, next) => {
 const Register = async (req, res, next) => {
 	try {
 		const {
+			usertype,
+			method,
+			organization,
+			password,
+			google,
+			facebook,
 			username,
 			name,
 			email,
-			password,
 			language,
 			country,
-			userType,
-			organizations,
 		} = req.body;
 
 		const existing_user = await UserService.FindOne({
@@ -97,15 +100,17 @@ const Register = async (req, res, next) => {
 		}
 
 		const new_user = await UserService.Create({
-			method: "local",
+			usertype,
+			method  ,
+			organization,
+			password,
+			google,
+			facebook,
 			username,
 			name,
 			email,
-			password,
 			language,
 			country,
-			userType,
-			organizations,
 		});
 
 		const access_token = jwt.sign(new_user.toJSON(), process.env.SECRET_TOKEN, {
@@ -127,16 +132,16 @@ const Register = async (req, res, next) => {
 const UpdateUser = async (req, res, next) => {
 	try {
 		const { user_id } = req.params;
-		// const {
-		// 	username,
-		// 	name,
-		// 	email,
-		// 	password,
-		// 	language,
-		// 	country,
-		// 	userType,
-		// 	organizations,
-		// } = req.body;
+		const {
+			username,
+			name,
+			email,
+			password,
+			language,
+			country,
+			userType,
+			organizations,
+		} = req.body;
 
 		const user = await UserService.FindOne({
 			_id: user_id,
@@ -148,14 +153,15 @@ const UpdateUser = async (req, res, next) => {
 			});
 		}
 
-		await UserService.FindOneAndUpdate(
-			{ _id: user_id },
-			req.body
+		new_record=await UserService.FindOneAndUpdate(
+			{ _id : user_id },
+			 req.body
 		);
 
+		
 		return res.status(200).json({
-			message: 'Ok',
-			data: 'User Updated',
+			message: 'User Updated',
+			data: new_record,
 		});
 	} catch (error) {
 		return next(new Error(error.message));

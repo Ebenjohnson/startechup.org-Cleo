@@ -31,7 +31,7 @@ try {
 }
  }
 
-const FindOneAndPopulate = async(query,populate_field)=>{
+const FindOneAndPopulate = async(query, populate_field)=>{
    try {
       const organization = await organization.findOne(query).populate(populate_field)
       const admins =organization.admins

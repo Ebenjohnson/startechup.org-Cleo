@@ -1,3 +1,4 @@
+const { Timestamp } = require('mongodb');
 const mongoose = require('mongoose')
  
 
@@ -7,7 +8,7 @@ const OrganizationSchema = new mongoose.Schema({
 	org_country: String,
 	org_city: String,
 	org_picture: String,
-	admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+	admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
 	createdAt: {
 		type: Date,
 		default: Date.now,
@@ -19,7 +20,7 @@ const OrganizationSchema = new mongoose.Schema({
 });
 
 OrganizationSchema.pre( 'findOneAndUpdate', function(next) {
-	this.updateOne({}, { $set: { updatedAt: new Date() } });
+	this.updateOne({}, { $set: { updatedAt: new Date } });
 	next()
 });
 

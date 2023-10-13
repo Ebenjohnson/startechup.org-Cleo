@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
-    userType : {
+    usertype : {
         type: String,
         enum: ["user","ngo_admin", "super_admin"],
         default : 'user',
@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema({
         default : 'local',
         required: true
     },
+
+    organization : { type: mongoose.Schema.Types.ObjectId, 
+        ref: 'organization' },
     password :{
     type : String,
     select : false
@@ -58,7 +61,8 @@ const UserSchema = new mongoose.Schema({
 
 
    UserSchema.pre('findOneAndUpdate', async function ()  {
-	this.update( { $set: { updatedAt: new Date() } })
+	this.updateOne({}, { $set: { updatedAt: new Date() } })
+    
 });
 
 const User = mongoose.model("users",UserSchema,"users")
